@@ -1,0 +1,12 @@
+language: node_js
+node_js:
+- 14
+cache: yarn
+deploy:
+  provider: heroku
+  api_key:
+    secure: Xpd9kLftaGQF8TgoT2Bf+W3gwmohfFFM6qh4jVUV/qTcZ86x/VJkz+iQxFnnNgp3ag6Qz2Mx6AEfsQcUF6yGd0G43ICGqoQWtuo4teHOhaa11v/WBw+fY7nnvm8afkZAjykY38IF1EvPTcHBZjTIDUh6pjoJMQuQiGqvRpY9u5UD7g1it0+tAbI+mKKFcZ6tQpFNP9y7Cw6xaguHHqI5NHybDLdESOQxBZjIG6lsc519oi7HqIlV8IdwJrpTSXtt4W0+jEkRDg01mQ/MD1YLJkFEBM5HXd4Mpv/Q9mU6lgOKLOhi9t+j0rM01/9SZnBN9NT+e/9QJPQn4U76I7m98vjB0G5KLKUAgMdFbPLYJptC0XI1wfcHGjIW5f850mkZsHGFrFfPTBrNQ1EBVfbS8xb5549bbQEzioWsBLkrxWRf+FgivfXCCYPGEVdXrFA3UwRB187khIaahPoWTyNZlLuLEX4JBKFFSTKM4RfNZHGFDlAYz9GJV4Zfd6uFAzY3c0jkN3rEsmYZlfyPLuu2bU19iW21lMWBeMwgInHvPKwYTB7E7Q3+sOWwdUGPcacEl0F6kOSctD7LSnw92w0oOyfnPajWST6yJr4HuXh7mgCkHs04sEXB37XAlXAqpXC0nOy3jfYgFbzjJsavzgJ7RK+j/ayA56ZVGtsmypmVr+Q=
+  app: asteffey-exercise-tracker
+  on:
+    repo: asteffey/exercise-tracker
+  skip_cleanup: true
