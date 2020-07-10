@@ -1,7 +1,8 @@
 import mongoose from 'mongoose'
 import request from 'supertest'
 import app from './app'
-import UserModel from './models/User'
+import UserModel, { User } from './models/User'
+import existingUsers from './controller/__tests__/users.json'
 
 describe('exercise api', () => {
   const newUsername = 'new_user'
@@ -12,6 +13,10 @@ describe('exercise api', () => {
 
   afterAll(async () => {
     mongoose.connection.close()
+  })
+
+  beforeEach(async () => {
+    await UserModel.create(existingUsers)
   })
 
   afterEach(async () => {
@@ -25,5 +30,15 @@ describe('exercise api', () => {
 
     expect(body.username).toEqual(newUsername)
     expect(body._id).toBeDefined()
+  })
+
+  it('gets all Users', async () => {
+    const { body } = await request(app)
+      .get('/api/exercise/users')
+
+    const existingUsernames = existingUsers.map(user => user.username)
+    body.forEach(({ username }: User) => {
+      expect(existingUsernames).toContain(username)
+    })
   })
 })

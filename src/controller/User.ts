@@ -28,3 +28,14 @@ export async function newUser ({ body: { username } }: NewUserRequest, response:
     }
   }
 }
+
+export async function allUsers (_: any, response: Response, next: NextFunction) {
+  try {
+    const users = await User.find({})
+    response.json(users.map(
+      ({ _id, username }) => ({ _id, username })
+    ))
+  } catch (err) {
+    next(err)
+  }
+}

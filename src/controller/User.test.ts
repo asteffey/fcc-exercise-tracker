@@ -3,12 +3,10 @@ import * as User from './User'
 import UserModel from '../models/User'
 import '../db'
 import { NextFunction, Response } from 'express'
+import existingUsers from './__tests__/users.json'
 
 describe('new-user', () => {
   const newUsername = 'new_user'
-  const existingUser = {
-    username: 'existing_user'
-  }
   let response: Response
   let next: NextFunction
 
@@ -21,7 +19,7 @@ describe('new-user', () => {
   })
 
   beforeEach(async () => {
-    await UserModel.create(existingUser)
+    await UserModel.create(existingUsers)
 
     response = {} as Response
     response.status = jest.fn().mockReturnValue(response)
@@ -50,12 +48,12 @@ describe('new-user', () => {
   })
 
   it('returns error if username already exists', async () => {
-    await User.newUser({ body: { username: existingUser.username } }, response, next)
+    await User.newUser({ body: { username: existingUsers[0].username } }, response, next)
 
     expect(response.status).toBeCalledTimes(1)
     expect(response.status).toBeCalledWith(400)
     expect(response.send).toBeCalledTimes(1)
-    expect(response.send).toBeCalledWith(expect.stringMatching(new RegExp(`${existingUser.username} already exists`)))
+    expect(response.send).toBeCalledWith(expect.stringMatching(new RegExp(`${existingUsers[0].username} already exists`)))
   })
 
   it.each([
