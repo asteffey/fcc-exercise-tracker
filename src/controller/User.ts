@@ -20,6 +20,9 @@ export async function newUser ({ body: { username } }: NewUserRequest, response:
     if (err.code === DUPLICATE_KEY_ERROR) {
       response.status(400)
       response.send(`username ${username} already exists`)
+    } else if (err.name === 'ValidationError') {
+      response.status(400)
+      response.send(`username ${username} must begin with a letter and be between 6 and 16 characters`)
     } else {
       next(err)
     }

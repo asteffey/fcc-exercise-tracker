@@ -49,12 +49,25 @@ describe('new-user', () => {
     expect(username).toBe(newUsername)
   })
 
-  it('returns error is username already exists', async () => {
+  it('returns error if username already exists', async () => {
     await User.newUser({ body: { username: existingUser.username } }, response, next)
 
     expect(response.status).toBeCalledTimes(1)
     expect(response.status).toBeCalledWith(400)
     expect(response.send).toBeCalledTimes(1)
     expect(response.send).toBeCalledWith(expect.stringMatching(new RegExp(`${existingUser.username} already exists`)))
+  })
+
+  it.each([
+    'short',
+    '1bad',
+    '_bad',
+    '',
+    'toolongbecauseItypetoomuch'
+  ])('returns error for invalid username %p', async (username) => {
+    await User.newUser({ body: { username } }, response, next)
+
+    expect(response.status).toBeCalledTimes(1)
+    expect(response.status).toBeCalledWith(400)
   })
 })
