@@ -44,6 +44,7 @@ describe('User Service', () => {
   ])('returns error for invalid username %p', async (username) => {
     const newUser = User.newUser({ username })
     await expect(newUser).rejects.toEqual(expect.objectContaining({
+      message: expect.stringContaining('username'),
       code: 400
     }))
   })

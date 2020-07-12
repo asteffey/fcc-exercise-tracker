@@ -1,11 +1,14 @@
 [
   {
+    "_id": "000000000000000000000001",
     "username": "existing_user1"
   },
   {
+    "_id": "000000000000000000000002",
     "username": "existing_user2"
   },
   {
+    "_id": "000000000000000000000003",
     "username": "existing_user3"
   }
 ]
