@@ -82,6 +82,7 @@ describe('exercise api', () => {
 
     expect(status).toEqual(200)
     expect(body).toMatchObject({
+      _id: data.userId,
       username: existingUsers[0].username,
       type: data.type,
       description: data.description,
@@ -105,6 +106,7 @@ describe('exercise api', () => {
 
     expect(status).toEqual(200)
     expect(body).toMatchObject({
+      _id: data.userId,
       username: existingUsers[0].username,
       type: data.type,
       description: data.description,

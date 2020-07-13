@@ -39,8 +39,10 @@ export async function addExercise ({ userId, type, description, duration, date }
     })
     await exercise.populate(propertyOf<Exercise>('userId')).execPopulate()
 
+    const user = exercise.userId as User
     return {
-      username: (exercise.userId as User).username,
+      _id: user._id,
+      username: user.username,
       type: exercise.type,
       description: exercise.description,
       duration: exercise.duration,
