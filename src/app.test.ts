@@ -2,7 +2,9 @@ import mongoose from 'mongoose'
 import request from 'supertest'
 import app from './app'
 import UserModel, { User } from './models/User'
+import ExerciseModel from './models/Exercise'
 import existingUsers from './service/__tests__/users.json'
+import existingExercises from './service/__tests__/exercises.json'
 
 function urlEncoded (obj: any) {
   return Object.keys(obj).map(key =>
@@ -22,13 +24,18 @@ describe('exercise api', () => {
   })
 
   afterAll(async () => {
-    mongoose.connection.close()
+    await mongoose.connection.close()
     global.Date.now = realNow
   })
 
   beforeEach(async () => {
-    await UserModel.deleteMany({})
     await UserModel.create(existingUsers)
+    await ExerciseModel.create(existingExercises)
+  })
+
+  afterEach(async () => {
+    await ExerciseModel.deleteMany({})
+    await UserModel.deleteMany({})
   })
 
   it('creates a new user', async () => {
@@ -103,5 +110,26 @@ describe('exercise api', () => {
       duration: Number(data.duration),
       when: mockNow
     })
+  })
+
+  it('returns full exercise log', async () => {
+    const userId = existingUsers[0]._id
+    const { body, status } = await request(app)
+      .get(`/api/exercise/log?userId=${userId}`)
+
+    expect(status).toEqual(200)
+    expect(body).toEqual(expect.objectContaining({
+      _id: userId,
+      username: existingUsers[0].username,
+      count: 3,
+      log: existingExercises
+        .filter(exercise => exercise.userId === userId)
+        .map(({ description, duration, type, when }) => ({
+          description,
+          duration,
+          type,
+          when
+        }))
+    }))
   })
 })

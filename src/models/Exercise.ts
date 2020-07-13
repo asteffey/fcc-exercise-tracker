@@ -1,4 +1,4 @@
-import { Schema, model, Document } from 'mongoose'
+import { Schema, model, Document, Types } from 'mongoose'
 import { User } from './User'
 
 const schema = new Schema({
@@ -13,7 +13,7 @@ const schema = new Schema({
 })
 
 export interface Exercise extends Document {
-  userId: Schema.Types.ObjectId | User,
+  userId: string | Types.ObjectId | User,
   type: string,
   description: string,
   duration: number,

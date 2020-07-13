@@ -2,7 +2,7 @@ import cors from 'cors'
 import express from 'express'
 import { urlencoded } from 'body-parser'
 import { allUsers, newUser } from './service/User'
-import { addExercise } from './service/Exercise'
+import { addExercise, getLog } from './service/Exercise'
 import './db'
 import handleErrors from './restErrorHandlerDecorator'
 
@@ -25,6 +25,11 @@ app.get('/api/exercise/users', handleErrors(async (_, response) => {
 app.post('/api/exercise/add', handleErrors(async ({ body }, response) => {
   const exercise = await addExercise(body)
   response.json(exercise)
+}))
+
+app.get('/api/exercise/log', handleErrors(async ({ query }, response) => {
+  const exercises = await getLog(query)
+  response.json(exercises)
 }))
 
 export default app

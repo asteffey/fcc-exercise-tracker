@@ -4,6 +4,7 @@ import ExerciseModel from '../models/Exercise'
 import '../db'
 import existingExercises from './__tests__/exercises.json'
 import existingUsers from './__tests__/users.json'
+import UserModel from '../models/User'
 
 describe('Exercise Service', () => {
   const newExercise = {
@@ -29,8 +30,13 @@ describe('Exercise Service', () => {
   })
 
   beforeEach(async () => {
-    await ExerciseModel.deleteMany({})
+    await UserModel.create(existingUsers)
     await ExerciseModel.create(existingExercises)
+  })
+
+  afterEach(async () => {
+    await ExerciseModel.deleteMany({})
+    await UserModel.deleteMany({})
   })
 
   it.each([
@@ -49,5 +55,29 @@ describe('Exercise Service', () => {
       message: expect.stringContaining(missingVariable),
       code: 400
     }))
+  })
+
+  it.each([
+    ['', 400],
+    [undefined, 400],
+    ['BAD', 400],
+    ['000000000000000000000000', 404] // non-existent user
+  ])('returns error when log requested with invalid userId \'%s\'', async (badUserId, code) => {
+    const exercises = Exercise.getLog({ userId: badUserId })
+
+    await expect(exercises).rejects.toEqual(expect.objectContaining({
+      message: expect.stringContaining('userId'),
+      code
+    }))
+  })
+
+  it('returns empty when log user has no exercises', async () => {
+    const userId = existingUsers[2]._id
+    const { _id, username, count, log } = await Exercise.getLog({ userId })
+
+    expect(_id).toEqual(userId)
+    expect(username).toEqual(existingUsers[2].username)
+    expect(count).toEqual(0)
+    expect(log).toHaveLength(0)
   })
 })

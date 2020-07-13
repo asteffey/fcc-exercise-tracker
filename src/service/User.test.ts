@@ -3,6 +3,8 @@ import * as User from './User'
 import UserModel from '../models/User'
 import '../db'
 import existingUsers from './__tests__/users.json'
+import ExerciseModel from '../models/Exercise'
+import existingExercises from './__tests__/exercises.json'
 
 describe('User Service', () => {
   const newUsername = 'new_user'
@@ -12,12 +14,17 @@ describe('User Service', () => {
   })
 
   afterAll(async () => {
-    mongoose.connection.close()
+    await mongoose.connection.close()
   })
 
   beforeEach(async () => {
-    await UserModel.deleteMany({})
     await UserModel.create(existingUsers)
+    await ExerciseModel.create(existingExercises)
+  })
+
+  afterEach(async () => {
+    await ExerciseModel.deleteMany({})
+    await UserModel.deleteMany({})
   })
 
   it('creates a new unique user', async () => {
