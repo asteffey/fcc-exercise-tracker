@@ -84,7 +84,6 @@ describe('exercise api', () => {
     expect(body).toMatchObject({
       _id: data.userId,
       username: existingUsers[0].username,
-      type: data.type,
       description: data.description,
       duration: Number(data.duration),
       timestamp: Date.parse(data.date),
@@ -95,7 +94,6 @@ describe('exercise api', () => {
   it('adds an exercise without a date', async () => {
     const data = {
       userId: existingUsers[0]._id,
-      type: 'coding',
       description: 'coding an exercise tracker',
       duration: '50'
     }
@@ -108,7 +106,6 @@ describe('exercise api', () => {
     expect(body).toMatchObject({
       _id: data.userId,
       username: existingUsers[0].username,
-      type: data.type,
       description: data.description,
       duration: Number(data.duration),
       timestamp: mockNow,
@@ -128,10 +125,9 @@ describe('exercise api', () => {
       count: 3,
       log: existingExercises
         .filter(exercise => exercise.userId === userId)
-        .map(({ description, duration, type, timestamp }) => ({
+        .map(({ description, duration, timestamp }) => ({
           description,
           duration,
-          type,
           timestamp,
           date: new Date(timestamp).toDateString()
         }))

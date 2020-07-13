@@ -1,28 +1,24 @@
 [
   {
     "userId": "000000000000000000000001",
-    "type": "running",
     "description": "running really fast",
     "duration": 123,
     "timestamp": 1594348691000
   },
   {
     "userId": "000000000000000000000001",
-    "type": "jumping",
     "description": "jumping really low",
     "duration": 23,
     "timestamp": 1594348692000
   },
   {
     "userId": "000000000000000000000001",
-    "type": "swimming",
     "description": "swimming across an ocean",
     "duration": 2468,
     "timestamp": 1594348999000
   },
   {
     "userId": "000000000000000000000002",
-    "type": "sleeping",
     "description": "sleeping for an entire day",
     "duration": 86400,
     "timestamp": 1494348694000

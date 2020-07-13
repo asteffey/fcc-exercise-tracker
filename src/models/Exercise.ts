@@ -6,7 +6,6 @@ const schema = new Schema({
     type: Schema.Types.ObjectId,
     ref: 'User'
   },
-  type: { type: String, required: true },
   description: { type: String, required: true },
   duration: { type: Number, required: true },
   timestamp: { type: Number, required: true }
@@ -14,7 +13,6 @@ const schema = new Schema({
 
 export interface Exercise extends Document {
   userId: string | Types.ObjectId | User,
-  type: string,
   description: string,
   duration: number,
   timestamp: number

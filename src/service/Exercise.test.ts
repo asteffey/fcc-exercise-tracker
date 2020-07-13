@@ -9,7 +9,6 @@ import UserModel from '../models/User'
 describe('Exercise Service', () => {
   const newExercise = {
     userId: existingUsers[0]._id,
-    type: 'coding',
     description: 'coding an exercise tracker',
     duration: '50',
     timestamp: '2020-07-09'
