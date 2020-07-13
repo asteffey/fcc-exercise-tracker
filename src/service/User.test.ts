@@ -47,7 +47,7 @@ describe('User Service', () => {
     '1bad',
     '_bad',
     '',
-    'toolongbecauseItypetoomuch'
+    'toolongbecauseitypetoomuchandthisisreallytoolongalready'
   ])('returns error for invalid username %p', async (username) => {
     const newUser = User.newUser({ username })
     await expect(newUser).rejects.toEqual(expect.objectContaining({
