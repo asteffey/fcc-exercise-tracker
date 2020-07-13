@@ -41,7 +41,6 @@ describe('Exercise Service', () => {
 
   it.each([
     'userId',
-    'type',
     'description',
     'duration'
   ])('complains about a missing %s key', async (missingVariable) => {

@@ -6,6 +6,8 @@ import { Types } from 'mongoose'
 import RestError from './RestError'
 import checkExists from '../util/checkExists'
 
+const DEFAULT_TYPE = 'exercise'
+
 interface NewExercise {
   userId?: string
   type?: string
@@ -30,7 +32,7 @@ export async function addExercise ({ userId, type, description, duration, date }
   return await handleValidationError(async () => {
     const exercise = await ExerciseModel.create({
       userId: Types.ObjectId(validate('userId', userId)),
-      type: validate('type', type),
+      type: type || DEFAULT_TYPE,
       description: validate('description', description),
       duration: Number(validate('duration', duration)),
       timestamp: Number(date) || Date.parse(date as string) || Date.now()
