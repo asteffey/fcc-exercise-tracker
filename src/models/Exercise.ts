@@ -9,7 +9,7 @@ const schema = new Schema({
   type: { type: String, required: true },
   description: { type: String, required: true },
   duration: { type: Number, required: true },
-  when: { type: Number, required: true }
+  timestamp: { type: Number, required: true }
 })
 
 export interface Exercise extends Document {
@@ -17,7 +17,7 @@ export interface Exercise extends Document {
   type: string,
   description: string,
   duration: number,
-  when: number
+  timestamp: number
 }
 
 export default model<Exercise>('Exercise', schema)

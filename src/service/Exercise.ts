@@ -11,7 +11,7 @@ interface NewExercise {
   type?: string
   description?: string
   duration?: string
-  when?: string
+  date?: string
 }
 
 function validate<T> (field: keyof Exercise | keyof User, value: T | undefined) {
@@ -26,14 +26,14 @@ function toValidObjectId (field: keyof Exercise | keyof User, value: string | un
   }
 }
 
-export async function addExercise ({ userId, type, description, duration, when }: NewExercise) {
+export async function addExercise ({ userId, type, description, duration, date }: NewExercise) {
   return await handleValidationError(async () => {
     const exercise = await ExerciseModel.create({
       userId: Types.ObjectId(validate('userId', userId)),
       type: validate('type', type),
       description: validate('description', description),
       duration: Number(validate('duration', duration)),
-      when: Number(when) || Date.parse(when as string) || Date.now()
+      timestamp: Number(date) || Date.parse(date as string) || Date.now()
     })
     await exercise.populate(propertyOf<Exercise>('userId')).execPopulate()
 
@@ -42,7 +42,8 @@ export async function addExercise ({ userId, type, description, duration, when }
       type: exercise.type,
       description: exercise.description,
       duration: exercise.duration,
-      when: exercise.when
+      timestamp: exercise.timestamp,
+      date: new Date(exercise.timestamp).toDateString()
     }
   })
 }
@@ -64,11 +65,12 @@ export async function getLog ({ userId }: LogRequest) {
       _id: user._id.toString(),
       username: user.username,
       count: exercises.length,
-      log: exercises.map(({ type, description, duration, when }) => ({
+      log: exercises.map(({ type, description, duration, timestamp }) => ({
         type,
         description,
         duration,
-        when
+        timestamp,
+        date: new Date(timestamp).toDateString()
       }))
     }
   })

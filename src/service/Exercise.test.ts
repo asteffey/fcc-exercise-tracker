@@ -12,7 +12,7 @@ describe('Exercise Service', () => {
     type: 'coding',
     description: 'coding an exercise tracker',
     duration: '50',
-    when: '2020-07-09'
+    timestamp: '2020-07-09'
   }
 
   beforeAll(async () => {

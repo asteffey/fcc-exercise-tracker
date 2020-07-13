@@ -73,7 +73,7 @@ describe('exercise api', () => {
       type: 'coding',
       description: 'coding an exercise tracker',
       duration: '50',
-      when: '2020-07-09'
+      date: '2020-07-09'
     }
 
     const { body, status } = await request(app)
@@ -86,7 +86,8 @@ describe('exercise api', () => {
       type: data.type,
       description: data.description,
       duration: Number(data.duration),
-      when: Date.parse(data.when)
+      timestamp: Date.parse(data.date),
+      date: new Date(data.date).toDateString()
     })
   })
 
@@ -108,7 +109,7 @@ describe('exercise api', () => {
       type: data.type,
       description: data.description,
       duration: Number(data.duration),
-      when: mockNow
+      timestamp: mockNow
     })
   })
 
@@ -124,11 +125,12 @@ describe('exercise api', () => {
       count: 3,
       log: existingExercises
         .filter(exercise => exercise.userId === userId)
-        .map(({ description, duration, type, when }) => ({
+        .map(({ description, duration, type, timestamp }) => ({
           description,
           duration,
           type,
-          when
+          timestamp,
+          date: new Date(timestamp).toDateString()
         }))
     }))
   })
