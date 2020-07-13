@@ -111,7 +111,8 @@ describe('exercise api', () => {
       type: data.type,
       description: data.description,
       duration: Number(data.duration),
-      timestamp: mockNow
+      timestamp: mockNow,
+      date: new Date(mockNow).toDateString()
     })
   })
 
