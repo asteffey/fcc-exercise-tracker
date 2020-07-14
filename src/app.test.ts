@@ -152,4 +152,21 @@ describe('exercise api', () => {
         .map(toReturnedExercise)
     }))
   })
+
+  it('returns partial exercise log with limit', async () => {
+    const userId = existingUsers[0]._id
+    const limit = 3
+    const { body, status } = await request(app)
+      .get(`/api/exercise/log?userId=${userId}&limit=${limit}`)
+
+    expect(status).toEqual(200)
+    expect(body).toEqual(expect.objectContaining({
+      _id: userId,
+      username: existingUsers[0].username,
+      count: limit,
+      log: existingExercises
+        .slice(0, limit)
+        .map(toReturnedExercise)
+    }))
+  })
 })

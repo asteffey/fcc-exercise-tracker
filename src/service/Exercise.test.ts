@@ -97,7 +97,7 @@ describe('Exercise Service', () => {
   ${'2020-01-01'} | ${undefined}
   ${undefined}    | ${'2020-01-02'}
   ${'2020-01-01'} | ${'BAD'}
-  ${'BAD'}    | ${'2020-01-02'}
+  ${'BAD'}        | ${'2020-01-02'}
   `('returns full log when from ($from) or to ($to) are invalid', async ({ from, to }) => {
     const userId = existingUsers[0]._id
 
@@ -107,5 +107,27 @@ describe('Exercise Service', () => {
     expect(username).toEqual(existingUsers[0].username)
     expect(count).toEqual(5)
     expect(log).toHaveLength(5)
+  })
+
+  it.each`
+  limit           | entries
+  ${undefined}    | ${5}
+  ${''}           | ${5}
+  ${0}            | ${5}
+  ${1}            | ${1}
+  ${6}            | ${5}
+  ${-2}           | ${2}
+  ${1.4}          | ${1}
+  ${1.6}          | ${1}
+  ${'bad'}        | ${5}
+  `('returns entries entries log when limit is $limit', async ({ limit, entries }) => {
+    const userId = existingUsers[0]._id
+
+    const { _id, username, count, log } = await Exercise.getLog({ userId, limit })
+
+    expect(_id).toEqual(userId)
+    expect(username).toEqual(existingUsers[0].username)
+    expect(count).toEqual(entries)
+    expect(log).toHaveLength(entries)
   })
 })

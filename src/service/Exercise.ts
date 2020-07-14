@@ -64,10 +64,11 @@ export async function addExercise ({ userId, description, duration, date }: NewE
 interface LogRequest {
   userId?: string,
   from?: string,
-  to?: string
+  to?: string,
+  limit?: string
 }
 
-export async function getLog ({ userId, from, to }: LogRequest) {
+export async function getLog ({ userId, from, to, limit }: LogRequest) {
   return handleValidationError(async () => {
     const id = toValidObjectId('userId', userId)
     const fromDate = toValidDate(from)
@@ -81,7 +82,9 @@ export async function getLog ({ userId, from, to }: LogRequest) {
     const [user, exercises] = await Promise.all([
       UserModel.findById(userId)
         .then(checkExists(() => new RestError(`userId ${userId} not found`, 404))),
-      ExerciseModel.find(exerciseQuery).sort({ date: 1 })
+      ExerciseModel.find(exerciseQuery)
+        .sort({ date: 1 })
+        .limit(-Math.abs(Number(limit)) || 0)
     ])
 
     return {
