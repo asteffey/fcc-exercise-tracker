@@ -2,7 +2,7 @@ import ExerciseModel, { Exercise } from '../models/Exercise'
 import UserModel, { User } from '../models/User'
 import handleValidationError from './handleValidationErrorDecorator'
 import propertyOf from '../util/propertyOf'
-import { Types } from 'mongoose'
+import { FilterQuery, Types } from 'mongoose'
 import RestError from './RestError'
 import checkExists from '../util/checkExists'
 import moment from 'moment'
@@ -24,7 +24,7 @@ function toValidDate (date: string | undefined) {
   if (parsed.isValid()) {
     return parsed
   } else {
-    return Date.now()
+    return undefined
   }
 }
 
@@ -46,7 +46,7 @@ export async function addExercise ({ userId, description, duration, date }: NewE
       userId: Types.ObjectId(validate('userId', userId)),
       description: validate('description', description),
       duration: Number(validate('duration', duration)),
-      date: toValidDate(date)
+      date: toValidDate(date) || Date.now()
     })
     await exercise.populate(propertyOf<Exercise>('userId')).execPopulate()
 
@@ -62,16 +62,26 @@ export async function addExercise ({ userId, description, duration, date }: NewE
 }
 
 interface LogRequest {
-  userId?: string
+  userId?: string,
+  from?: string,
+  to?: string
 }
 
-export async function getLog ({ userId }: LogRequest) {
+export async function getLog ({ userId, from, to }: LogRequest) {
   return handleValidationError(async () => {
     const id = toValidObjectId('userId', userId)
+    const fromDate = toValidDate(from)
+    const toDate = toValidDate(to)
+
+    const exerciseQuery: FilterQuery<Exercise> = { userId: id }
+    if (fromDate && toDate) {
+      exerciseQuery.date = { $gte: fromDate.startOf('day').toDate(), $lte: toDate.endOf('day').toDate() }
+    }
+
     const [user, exercises] = await Promise.all([
       UserModel.findById(userId)
         .then(checkExists(() => new RestError(`userId ${userId} not found`, 404))),
-      ExerciseModel.find({ userId: id })
+      ExerciseModel.find(exerciseQuery).sort({ date: 1 })
     ])
 
     return {

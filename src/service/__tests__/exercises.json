@@ -18,6 +18,18 @@
     "date": "Jan 3 2020"
   },
   {
+    "userId": "000000000000000000000001",
+    "description": "floating across the galaxy",
+    "duration": 42,
+    "date": "Jan 4 2020"
+  },
+  {
+    "userId": "000000000000000000000001",
+    "description": "sitting really intensely",
+    "duration": 23,
+    "date": "Jan 5 2020"
+  },
+  {
     "userId": "000000000000000000000002",
     "description": "sleeping for an entire day",
     "duration": 86400,

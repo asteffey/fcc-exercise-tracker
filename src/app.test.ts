@@ -12,6 +12,13 @@ function urlEncoded (obj: any) {
   ).join('&')
 }
 
+// @ts-ignore
+const toReturnedExercise = ({ description, duration, date }) => ({
+  description,
+  duration,
+  date: new Date(date).toDateString()
+})
+
 describe('exercise api', () => {
   const newUsername = 'new_user'
   const mockNow = 1
@@ -121,14 +128,28 @@ describe('exercise api', () => {
     expect(body).toEqual(expect.objectContaining({
       _id: userId,
       username: existingUsers[0].username,
-      count: 3,
+      count: 5,
       log: existingExercises
-        .filter(exercise => exercise.userId === userId)
-        .map(({ description, duration, date }) => ({
-          description,
-          duration,
-          date: new Date(date).toDateString()
-        }))
+        .slice(0, 5)
+        .map(toReturnedExercise)
+    }))
+  })
+
+  it('returns filtered exercise log with from and to', async () => {
+    const userId = existingUsers[0]._id
+    const from = '2020-01-01'
+    const to = '2020-01-02'
+    const { body, status } = await request(app)
+      .get(`/api/exercise/log?userId=${userId}&from=${from}&to=${to}`)
+
+    expect(status).toEqual(200)
+    expect(body).toEqual(expect.objectContaining({
+      _id: userId,
+      username: existingUsers[0].username,
+      count: 2,
+      log: existingExercises
+        .slice(0, 2)
+        .map(toReturnedExercise)
     }))
   })
 })

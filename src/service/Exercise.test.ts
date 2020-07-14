@@ -78,4 +78,34 @@ describe('Exercise Service', () => {
     expect(count).toEqual(0)
     expect(log).toHaveLength(0)
   })
+
+  it('returns empty log when to and from range has no exercises', async () => {
+    const userId = existingUsers[0]._id
+    const from = '2030-01-01'
+    const to = '2031-01-01'
+    const { _id, username, count, log } = await Exercise.getLog({ userId, from, to })
+
+    expect(_id).toEqual(userId)
+    expect(username).toEqual(existingUsers[0].username)
+    expect(count).toEqual(0)
+    expect(log).toHaveLength(0)
+  })
+
+  it.each`
+  from            | to
+  ${undefined}    | ${undefined}
+  ${'2020-01-01'} | ${undefined}
+  ${undefined}    | ${'2020-01-02'}
+  ${'2020-01-01'} | ${'BAD'}
+  ${'BAD'}    | ${'2020-01-02'}
+  `('returns full log when from ($from) or to ($to) are invalid', async ({ from, to }) => {
+    const userId = existingUsers[0]._id
+
+    const { _id, username, count, log } = await Exercise.getLog({ userId, from, to })
+
+    expect(_id).toEqual(userId)
+    expect(username).toEqual(existingUsers[0].username)
+    expect(count).toEqual(5)
+    expect(log).toHaveLength(5)
+  })
 })
