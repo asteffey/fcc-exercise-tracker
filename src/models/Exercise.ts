@@ -8,14 +8,14 @@ const schema = new Schema({
   },
   description: { type: String, required: true },
   duration: { type: Number, required: true },
-  timestamp: { type: Number, required: true }
+  date: { type: Date, required: true }
 })
 
 export interface Exercise extends Document {
   userId: string | Types.ObjectId | User,
   description: string,
   duration: number,
-  timestamp: number
+  date: Date
 }
 
 export default model<Exercise>('Exercise', schema)

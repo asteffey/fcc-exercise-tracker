@@ -14,7 +14,8 @@ function urlEncoded (obj: any) {
 
 describe('exercise api', () => {
   const newUsername = 'new_user'
-  const mockNow = 1234
+  const mockNow = 1
+  const mockDate = 'Thu Jan 01 1970'
   const realNow = global.Date.now
 
   beforeAll(async () => {
@@ -73,7 +74,7 @@ describe('exercise api', () => {
       type: 'coding',
       description: 'coding an exercise tracker',
       duration: '50',
-      date: '2020-07-09'
+      date: '2020-01-15'
     }
 
     const { body, status } = await request(app)
@@ -86,8 +87,7 @@ describe('exercise api', () => {
       username: existingUsers[0].username,
       description: data.description,
       duration: Number(data.duration),
-      timestamp: Date.parse(data.date),
-      date: new Date(data.date).toDateString()
+      date: 'Wed Jan 15 2020'
     })
   })
 
@@ -108,8 +108,7 @@ describe('exercise api', () => {
       username: existingUsers[0].username,
       description: data.description,
       duration: Number(data.duration),
-      timestamp: mockNow,
-      date: new Date(mockNow).toDateString()
+      date: mockDate
     })
   })
 
@@ -125,11 +124,10 @@ describe('exercise api', () => {
       count: 3,
       log: existingExercises
         .filter(exercise => exercise.userId === userId)
-        .map(({ description, duration, timestamp }) => ({
+        .map(({ description, duration, date }) => ({
           description,
           duration,
-          timestamp,
-          date: new Date(timestamp).toDateString()
+          date: new Date(date).toDateString()
         }))
     }))
   })

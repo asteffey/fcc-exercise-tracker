@@ -3,24 +3,24 @@
     "userId": "000000000000000000000001",
     "description": "running really fast",
     "duration": 123,
-    "timestamp": 1594348691000
+    "date": "Jan 1 2020"
   },
   {
     "userId": "000000000000000000000001",
     "description": "jumping really low",
     "duration": 23,
-    "timestamp": 1594348692000
+    "date": "Jan 2 2020"
   },
   {
     "userId": "000000000000000000000001",
     "description": "swimming across an ocean",
     "duration": 2468,
-    "timestamp": 1594348999000
+    "date": "Jan 3 2020"
   },
   {
     "userId": "000000000000000000000002",
     "description": "sleeping for an entire day",
     "duration": 86400,
-    "timestamp": 1494348694000
+    "date": "Jan 4 2020"
   }
 ]
