@@ -11,7 +11,7 @@ describe('Exercise Service', () => {
     userId: existingUsers[0]._id,
     description: 'coding an exercise tracker',
     duration: '50',
-    timestamp: '2020-07-09'
+    date: '2020-07-09'
   }
 
   beforeAll(async () => {

@@ -56,7 +56,6 @@ export async function addExercise ({ userId, description, duration, date }: NewE
       username: user.username,
       description: exercise.description,
       duration: exercise.duration,
-      timestamp: exercise.date,
       date: formatDate(exercise.date)
     }
   })
