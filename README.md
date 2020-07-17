@@ -1,4 +1,4 @@
-## APIs and Microservices Projects - URL Shortener Microservice
+## APIs and Microservices Projects - Exercise Tracker
 
 [![Build Status](https://travis-ci.org/asteffey/fcc-exercise-tracker.svg?branch=master)](https://travis-ci.org/asteffey/fcc-exercise-tracker)
 [![Heroku](http://heroku-badge.herokuapp.com/?app=asteffey-exercise-tracker)](https://asteffey-exercise-tracker.herokuapp.com/)
